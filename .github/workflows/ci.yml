@@ -1,0 +1,35 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Shellcheck entrypoint.sh
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+          shellcheck entrypoint.sh
+
+  action-yml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate action.yml
+        uses: docker://rhysd/actionlint:latest
+        with:
+          args: -version
+
+  dockerfile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Hadolint Dockerfile
+        uses: docker://hadolint/hadolint:latest
+        with:
+          args: --failure-threshold warning Dockerfile

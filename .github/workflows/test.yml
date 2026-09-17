@@ -1,0 +1,54 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  # Step 1: build the action image once, cache it.
+  build-image:
+    runs-on: ubuntu-latest
+    outputs:
+      image-tag: ${{ steps.meta.outputs.image-tag }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Derive image tag
+        id: meta
+        run: echo "image-tag=skillmd-lint-action:test-${{ github.sha }}" >>"$GITHUB_OUTPUT"
+
+      - name: Build
+        run: docker build -t "${{ steps.meta.outputs.image-tag }}" .
+
+  # Step 2: exercise the action against the three fixtures.
+  test:
+    needs: build-image
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        fixture: [valid, warnings, invalid]
+        strict: [false]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run action against ${{ matrix.fixture }}
+        id: lint
+        uses: docker://${{ needs.build-image.outputs.image-tag }}
+        with:
+          args: >-
+            --path=tests/fixtures/${{ matrix.fixture }}/SKILL.md
+            --version-input=1.1.0
+            --python-version-input=3.12
+        env:
+          GITHUB_WORKSPACE: ${{ github.workspace }}
+
+      - name: Assert exit codes
+        run: |
+          if [[ "${{ matrix.fixture }}" == "valid" ]]; then
+            [[ "${{ steps.lint.outputs.errors }}" == "0" ]]
+          elif [[ "${{ matrix.fixture }}" == "warnings" ]]; then
+            [[ "${{ steps.lint.outputs.errors }}" == "0" ]]
+            [[ "${{ steps.lint.outputs.warnings }}" -gt "0" ]]
+          fi
