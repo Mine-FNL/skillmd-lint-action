@@ -39,8 +39,7 @@ jobs:
         with:
           args: >-
             --path=tests/fixtures/${{ matrix.fixture }}/SKILL.md
-            --version-input=1.1.0
-            --python-version-input=3.12
+            --version-input=1.4.0
         env:
           GITHUB_WORKSPACE: ${{ github.workspace }}
 

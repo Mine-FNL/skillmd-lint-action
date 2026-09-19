@@ -2,7 +2,10 @@
 # GitHub Action container — runs skillmd-lint against the workspace.
 # Slim base for fast cold-start; multi-stage optional later.
 
-FROM python:${{ inputs.python-version || '3.12' }}-slim
+# GitHub does not interpolate action inputs inside the Dockerfile, so the
+# Python version is fixed. The action's `version` input selects which
+# skillmd-lint release is installed at runtime.
+FROM python:3.12-slim
 
 LABEL org.opencontainers.image.title="skillmd-lint-action"
 LABEL org.opencontainers.image.description="Lint SKILL.md files in CI via the skillmd-lint Python package."

@@ -20,13 +20,9 @@ inputs:
     required: false
     default: "false"
   version:
-    description: "skillmd-lint version to install (e.g. '1.1.0'). Pin this in production to keep CI reproducible."
+    description: "skillmd-lint version to install (e.g. '1.4.0'). Pin this in production to keep CI reproducible."
     required: false
-    default: "1.1.0"
-  python-version:
-    description: "Python version to use inside the action container."
-    required: false
-    default: "3.12"
+    default: "1.4.0"
   extra-args:
     description: "Extra args to pass through to skillmd-lint (e.g. '--format github --schema')."
     required: false
@@ -53,6 +49,5 @@ runs:
     - --strict-input=${{ inputs.strict }}
     - --fail-on-warnings-input=${{ inputs.fail-on-warnings }}
     - --version-input=${{ inputs.version }}
-    - --python-version-input=${{ inputs.python-version }}
     - --extra-args-input=${{ inputs.extra-args }}
     - --index-url-input=${{ inputs.index-url }}

@@ -41,7 +41,7 @@ jobs:
           path: skills/
 ```
 
-That's it. The action installs `skillmd-lint==1.1.0` in a fresh Python
+That's it. The action installs `skillmd-lint==1.4.0` in a fresh Python
 container, lints the requested path, and exits non-zero if any errors are
 found. Warnings show up as GitHub Actions annotations on the relevant lines.
 
@@ -52,8 +52,7 @@ found. Warnings show up as GitHub Actions annotations on the relevant lines.
 | `path`            | no       | `skills/`     | Path(s) to lint — a `SKILL.md` file, a skill folder, or a folder containing `skills/`.                  |
 | `strict`          | no       | `false`       | Treat warnings as errors (sets exit code 1 on any warning).                                            |
 | `fail-on-warnings`| no       | `false`       | Alias for `strict`. Either flag at `true` enables strict mode.                                         |
-| `version`         | no       | `1.1.0`       | `skillmd-lint` version to install. **Pin this in production.**                                         |
-| `python-version`  | no       | `3.12`        | Python version to use inside the container.                                                            |
+| `version`         | no       | `1.4.0`       | `skillmd-lint` version to install. **Pin this in production.**                                         |
 | `extra-args`      | no       | `""`          | Extra args passed through to `skillmd-lint` (e.g. `"--format github --schema"`).                        |
 | `index-url`       | no       | `""`          | PEP 503 index URL for `pip install`. Set to a private index for offline / air-gapped runners.          |
 
@@ -109,7 +108,7 @@ Use them to gate downstream jobs:
       - uses: Mine-FNL/skillmd-lint-action@v1
         with:
           path: skills/
-          version: 1.1.0
+          version: 1.4.0
 ```
 
 ### Air-gapped runner (private index)

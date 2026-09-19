@@ -11,8 +11,7 @@ set -euo pipefail
 PATH_ARG="skills/"
 STRICT_INPUT="false"
 FAIL_ON_WARNINGS_INPUT="false"
-VERSION_INPUT="1.1.0"
-PYTHON_VERSION_INPUT="3.12"
+VERSION_INPUT="1.4.0"
 EXTRA_ARGS_INPUT=""
 INDEX_URL_INPUT=""
 
@@ -23,7 +22,6 @@ while [[ $# -gt 0 ]]; do
         --strict-input=*)          STRICT_INPUT="${1#*=}" ;;
         --fail-on-warnings-input=*) FAIL_ON_WARNINGS_INPUT="${1#*=}" ;;
         --version-input=*)         VERSION_INPUT="${1#*=}" ;;
-        --python-version-input=*)  PYTHON_VERSION_INPUT="${1#*=}" ;;
         --extra-args-input=*)      EXTRA_ARGS_INPUT="${1#*=}" ;;
         --index-url-input=*)       INDEX_URL_INPUT="${1#*=}" ;;
         *) echo "::warning::unknown arg: $1" ;;
