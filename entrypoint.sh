@@ -41,15 +41,18 @@ if [[ ! -e "$ABS_PATH" ]]; then
     exit 2
 fi
 
-# Install skillmd-lint at the pinned version. Default to PyPI; allow
-# index-url override for users on private indexes.
+# Install skillmd-lint at the pinned version. Prefer the wheel attached to
+# the matching GitHub release, and fall back to PyPI. An explicit index-url
+# takes precedence for users on private indexes.
 PIP_FLAGS=(--disable-pip-version-check --quiet)
-if [[ -n "$INDEX_URL_INPUT" ]]; then
-    PIP_FLAGS+=(--index-url "$INDEX_URL_INPUT")
-fi
+RELEASE_URL="https://github.com/Mine-FNL/skillmd-lint/releases/download/v${VERSION_INPUT}/skillmd_lint-${VERSION_INPUT}-py3-none-any.whl"
 
-# shellcheck disable=SC2086
-python -m pip install "${PIP_FLAGS[@]}" "skillmd-lint==${VERSION_INPUT}"
+if [[ -n "$INDEX_URL_INPUT" ]]; then
+    python -m pip install "${PIP_FLAGS[@]}" --index-url "$INDEX_URL_INPUT" "skillmd-lint==${VERSION_INPUT}"
+elif ! python -m pip install "${PIP_FLAGS[@]}" "$RELEASE_URL"; then
+    echo "::warning::skillmd-lint v${VERSION_INPUT} wheel not found in the GitHub release assets; falling back to PyPI."
+    python -m pip install "${PIP_FLAGS[@]}" "skillmd-lint==${VERSION_INPUT}"
+fi
 
 # Build the CLI args. Either `--strict` or `--fail-on-warnings` enables strict.
 EXTRA=()
@@ -68,7 +71,7 @@ fi
 cd "$GITHUB_WORKSPACE"
 echo "::group::skillmd-lint $VERSION_INPUT — linting $PATH_ARG"
 set +e
-LINT_OUTPUT=$(python -m skillmd_lint "${EXTRA[@]}" "$ABS_PATH" 2>&1)
+LINT_OUTPUT=$(python -m skillmd_lint ${EXTRA[@]+"${EXTRA[@]}"} "$ABS_PATH" 2>&1)
 LINT_RC=$?
 set -e
 echo "$LINT_OUTPUT"

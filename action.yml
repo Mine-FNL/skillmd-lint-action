@@ -28,7 +28,7 @@ inputs:
     required: false
     default: ""
   index-url:
-    description: "PEP 503 index URL for pip install. Defaults to PyPI. Set this to the GitHub Pages index for an offline-friendly install path."
+    description: "PEP 503 index URL for pip install. When set, takes precedence over the default GitHub release-wheel install."
     required: false
     default: ""
 

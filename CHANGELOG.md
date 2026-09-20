@@ -33,3 +33,6 @@ All notable changes to `skillmd-lint-action` are recorded here.
   build. The `python-version` input was removed with it.
 - Default `version` input bumped to `1.4.0` to match the current
   skillmd-lint release.
+- The action now installs the pinned `skillmd-lint` wheel from the
+  matching GitHub release asset, falling back to PyPI. `index-url`
+  still overrides both.

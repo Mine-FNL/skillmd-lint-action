@@ -41,7 +41,8 @@ jobs:
           path: skills/
 ```
 
-That's it. The action installs `skillmd-lint==1.4.0` in a fresh Python
+That's it. The action installs the pinned `skillmd-lint` wheel from its
+GitHub release (falling back to PyPI when available) in a fresh Python
 container, lints the requested path, and exits non-zero if any errors are
 found. Warnings show up as GitHub Actions annotations on the relevant lines.
 
