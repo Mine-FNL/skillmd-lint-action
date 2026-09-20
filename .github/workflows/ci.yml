@@ -16,20 +16,20 @@ jobs:
           sudo apt-get install -y shellcheck
           shellcheck entrypoint.sh
 
-  action-yml:
+  actionlint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate action.yml
-        uses: docker://rhysd/actionlint:latest
-        with:
-          args: -version
+      - name: Lint workflows
+        run: |
+          docker run --rm -v "$GITHUB_WORKSPACE:/repo" -w /repo \
+            rhysd/actionlint:latest -color
 
   dockerfile:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Hadolint Dockerfile
-        uses: docker://hadolint/hadolint:latest
+        uses: hadolint/hadolint-action@v3.1.0
         with:
-          args: --failure-threshold warning Dockerfile
+          dockerfile: Dockerfile
