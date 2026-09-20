@@ -6,7 +6,7 @@
 Lint your `SKILL.md` files in CI on every push and PR.
 
 [![CI](https://github.com/Mine-FNL/skillmd-lint-action/actions/workflows/ci.yml/badge.svg)](https://github.com/Mine-FNL/skillmd-lint-action/actions)
-[![action](https://img.shields.io/badge/action-v1.0.0-blueviolet)](https://github.com/Mine-FNL/skillmd-lint-action/releases)
+[![action](https://img.shields.io/badge/action-v1.0.1-blueviolet)](https://github.com/Mine-FNL/skillmd-lint-action/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 </div>
