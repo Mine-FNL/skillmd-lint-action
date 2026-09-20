@@ -13,6 +13,7 @@ LABEL org.opencontainers.image.source="https://github.com/Mine-FNL/skillmd-lint-
 LABEL org.opencontainers.image.licenses="MIT"
 
 # Install system deps (git for checkout, ca-certificates for pip).
+# hadolint ignore=DL3008
 RUN apt-get update \
  && apt-get install -y --no-install-recommends git ca-certificates \
  && rm -rf /var/lib/apt/lists/*

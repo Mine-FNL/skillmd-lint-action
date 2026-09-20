@@ -24,12 +24,16 @@ jobs:
           version: "1.4.0"
 
       - name: Assert action outputs
+        env:
+          ERRORS: ${{ steps.lint.outputs.errors }}
+          WARNINGS: ${{ steps.lint.outputs.warnings }}
         run: |
-          if [[ "${{ matrix.fixture }}" == "valid" ]]; then
-            [[ "${{ steps.lint.outputs.errors }}" == "0" ]]
-          elif [[ "${{ matrix.fixture }}" == "warnings" ]]; then
-            [[ "${{ steps.lint.outputs.errors }}" == "0" ]]
-            [[ "${{ steps.lint.outputs.warnings }}" -gt "0" ]]
-          elif [[ "${{ matrix.fixture }}" == "invalid" ]]; then
-            [[ "${{ steps.lint.outputs.errors }}" -gt "0" ]]
+          fixture="${{ matrix.fixture }}"
+          if [[ "$fixture" == "valid" ]]; then
+            [[ "$ERRORS" == "0" ]]
+          elif [[ "$fixture" == "warnings" ]]; then
+            [[ "$ERRORS" == "0" ]]
+            [[ "$WARNINGS" =~ ^[0-9]+$ && "$WARNINGS" -gt 0 ]]
+          elif [[ "$fixture" == "invalid" ]]; then
+            [[ "$ERRORS" =~ ^[0-9]+$ && "$ERRORS" -gt 0 ]]
           fi
